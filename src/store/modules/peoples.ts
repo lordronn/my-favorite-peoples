@@ -89,8 +89,6 @@ const actions: ActionTree<PeoplesState, RootState> = {
         commit("SET_LOADING_ERROR", true);
         commit("SET_LOADING", false);
       }
-    } finally {
-      currentController = null;
     }
   },
   updatePage({ commit, dispatch }, pageNumber: number) {
