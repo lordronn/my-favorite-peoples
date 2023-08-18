@@ -1,6 +1,6 @@
 <template>
   <div class="container max-w-5xl mx-auto my-10 px-4">
-    <TableComponent
+    <TablePeoples
       v-if="favorites.length"
       class="mt-10"
       :columns="columns"
@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
-import TableComponent from "@/components/TableComponent.vue";
+import TablePeoples from "@/components/TablePeoples.vue";
 import PlaceholderComponent from "@/components/TablePlaceholder.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
-    TableComponent,
+    TablePeoples,
     PlaceholderComponent,
   },
   computed: {

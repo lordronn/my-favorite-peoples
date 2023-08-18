@@ -8,7 +8,7 @@
         :totalPages="totalPages"
         @changePage="updatePage" />
     </div>
-    <TableComponent
+    <TablePeoples
       class="mt-10"
       :columns="columns"
       :peoples="peoples"
@@ -20,14 +20,14 @@
 <script lang="ts">
 import PaginationComponent from "@/components/PaginationComponent.vue";
 import SearchDropdown from "@/components/SearchDropdown.vue";
-import TableComponent from "@/components/TableComponent.vue";
+import TablePeoples from "@/components/TablePeoples.vue";
 import PlaceholderComponent from "@/components/TablePlaceholder.vue";
 
 import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
-    TableComponent,
+    TablePeoples,
     PlaceholderComponent,
     PaginationComponent,
     SearchDropdown,

@@ -52,7 +52,6 @@
 import { Person, TableColumn } from "@/interfaces/index";
 
 export default {
-  name: "table-component",
   props: {
     columns: {
       type: Array as () => TableColumn[],
