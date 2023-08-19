@@ -11,7 +11,7 @@ export function normalizeApiPerson(data: ApiPerson): ApiPerson {
   const { favorite, ...restOfPerson } = data;
 
   return {
-    favorite, 
+    favorite,
     ...restOfPerson,
     id: getIdFromPerson(data.url),
   };

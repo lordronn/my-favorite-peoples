@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Person, TableColumn } from "@/interfaces/index";
+import { ApiPerson, TableColumn } from "@/interfaces/index";
 
 export default {
   props: {
@@ -58,7 +58,7 @@ export default {
       required: true,
     },
     peoples: {
-      type: Array as () => Person[],
+      type: Array as () => ApiPerson[],
       required: true,
     },
     loading: {
@@ -67,7 +67,7 @@ export default {
     },
   },
   methods: {
-    updateFavorite(person: Person) {
+    updateFavorite(person: ApiPerson) {
       this.$emit("updateFavorite", person);
     },
     goToPerson(id: string) {

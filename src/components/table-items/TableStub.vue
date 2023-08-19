@@ -1,19 +1,19 @@
 <template>
-  <div class="placeholder mx-auto mt-10 px-4">
-    <div v-if="type === 'empty'" class="placeholder__message">
-      <span class="material-icons placeholder__icon">inbox</span>
+  <div class="stub mx-auto mt-10 px-4">
+    <div v-if="type === 'empty'" class="stub__message">
+      <span class="material-icons stub__icon">inbox</span>
       <p class="text-lg font-semibold">The list is empty!</p>
       <p>You can add your favorites from the</p>
-      <button @click="goToPeoples" class="placeholder__button">
+      <button @click="goToPeoples" class="stub__button">
         <span>Peoples list</span>
         <span class="material-icons">arrow_right_alt</span>
       </button>
     </div>
-    <div v-if="type === 'error'" class="placeholder__message">
-      <span class="material-icons placeholder__icon">error_outline</span>
+    <div v-if="type === 'error'" class="stub__message">
+      <span class="material-icons stub__icon">error_outline</span>
       <p>
         An error occurred.
-        <button @click="reloadPage" class="placeholder__button">
+        <button @click="reloadPage" class="stub__button">
           Please try again.
           <span class="material-icons">refresh</span>
         </button>
@@ -43,7 +43,7 @@ export default {
 </script>
 
 <style scoped>
-.placeholder {
+.stub {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -55,17 +55,17 @@ export default {
   padding: 1rem;
 }
 
-.placeholder__message {
+.stub__message {
   text-align: center;
 }
 
-.placeholder__icon {
+.stub__icon {
   font-size: 3rem;
   color: #aaa;
   margin-bottom: 1rem;
 }
 
-.placeholder__button {
+.stub__button {
   display: flex;
   align-items: center;
   gap: 5px;
@@ -78,7 +78,7 @@ export default {
   transition: background-color 0.3s;
 }
 
-.placeholder__button:hover {
+.stub__button:hover {
   background-color: #2563eb;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="container max-w-2xl mx-auto my-10 px-4">
-    <PlaceholderComponent v-if="loadingError" type="error" />
+    <TableStub v-if="loadingError" type="error" />
     <TablePerson
       :person="person"
       :loading="loading"
@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts">
-import TablePerson from "@/components/TablePerson.vue";
-import PlaceholderComponent from "@/components/TablePlaceholder.vue";
+import TablePerson from "@/components/table-items/TablePerson.vue";
+import TableStub from "@/components/table-items/TableStub.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
-    PlaceholderComponent,
+    TableStub,
     TablePerson,
   },
   computed: {

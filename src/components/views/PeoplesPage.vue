@@ -1,5 +1,5 @@
 <template>
-  <PlaceholderComponent v-if="loadingError" type="error" />
+  <TableStub v-if="loadingError" type="error" />
   <div v-else class="container max-w-5xl mx-auto my-10 px-4">
     <div class="flex flex-col sm:flex-row gap-7 justify-between">
       <SearchDropdown />
@@ -18,17 +18,17 @@
 </template>
 
 <script lang="ts">
-import PaginationComponent from "@/components/PaginationComponent.vue";
-import SearchDropdown from "@/components/SearchDropdown.vue";
-import TablePeoples from "@/components/TablePeoples.vue";
-import PlaceholderComponent from "@/components/TablePlaceholder.vue";
+import PaginationComponent from "@/components/common/PaginationComponent.vue";
+import SearchDropdown from "@/components/common/SearchDropdown.vue";
+import TablePeoples from "@/components/table-items/TablePeoples.vue";
+import TableStub from "@/components/table-items/TableStub.vue";
 
 import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
     TablePeoples,
-    PlaceholderComponent,
+    TableStub,
     PaginationComponent,
     SearchDropdown,
   },

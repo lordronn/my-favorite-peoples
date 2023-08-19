@@ -7,19 +7,19 @@
       :peoples="favorites"
       :loading="false"
       @updateFavorite="toggleFavorite" />
-    <PlaceholderComponent v-else type="empty" />
+    <TableStub v-else type="empty" />
   </div>
 </template>
 
 <script lang="ts">
-import TablePeoples from "@/components/TablePeoples.vue";
-import PlaceholderComponent from "@/components/TablePlaceholder.vue";
+import TablePeoples from "@/components/table-items/TablePeoples.vue";
+import TableStub from "@/components/table-items/TableStub.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
   components: {
     TablePeoples,
-    PlaceholderComponent,
+    TableStub,
   },
   computed: {
     ...mapState("favorites", ["favorites"]),
