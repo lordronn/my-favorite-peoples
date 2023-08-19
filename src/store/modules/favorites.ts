@@ -1,4 +1,4 @@
-import { FavoritesState, RootState, ShortPerson } from "@/interfaces";
+import { ApiPerson, FavoritesState, RootState } from "@/interfaces";
 import { ActionTree, MutationTree } from "vuex";
 
 const namespaced: boolean = true;
@@ -19,7 +19,7 @@ const mutations: MutationTree<FavoritesState> = {
   },
 };
 const actions: ActionTree<FavoritesState, RootState> = {
-  toggleFavorite({ commit, getters, dispatch }, person: ShortPerson) {
+  toggleFavorite({ commit, getters, dispatch }, person: ApiPerson) {
     const isFavorite = getters.isFavorite(person.id);
 
     if (isFavorite) {

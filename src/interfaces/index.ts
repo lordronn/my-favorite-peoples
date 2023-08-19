@@ -1,5 +1,5 @@
 export interface PeoplesState {
-  peoples: ShortPerson[];
+  peoples: ApiPerson[];
   loading: boolean;
   loadingError: boolean;
   currentPage: number;
@@ -8,11 +8,11 @@ export interface PeoplesState {
 }
 
 export interface FavoritesState {
-  favorites: ShortPerson[];
+  favorites: ApiPerson[];
 }
 
 export interface SearchState {
-  results: ShortPerson[];
+  results: ApiPerson[];
   person: ApiPerson | null;
   loading: Boolean;
   loadingError: Boolean;
@@ -24,6 +24,8 @@ export interface RootState {
   search: SearchState;
 }
 export interface ApiPerson {
+  favorite: boolean;
+  id: string;
   name: string;
   height: string;
   mass: string;
@@ -40,20 +42,15 @@ export interface ApiPerson {
   created: string;
   edited: string;
   url: string;
-  favorite: boolean;
-  id: string;
 }
 
-export interface ShortPerson {
-  name: string;
-  height: string;
-  mass: string;
-  hair_color: string;
-  favorite: boolean;
-  id: string;
-}
-
-export type PersonKeys = keyof ShortPerson;
+export type PersonKeys =
+  | "name"
+  | "height"
+  | "mass"
+  | "hair_color"
+  | "favorite"
+  | "id";
 
 export interface TableColumn {
   key: PersonKeys;

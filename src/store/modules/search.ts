@@ -67,13 +67,11 @@ const actions: ActionTree<SearchState, RootState> = {
 
     try {
       const response = await api.get(`/people/${id}`);
-      const person = response.data;
-      const isFavorite = rootGetters["favorites/isFavorite"](person.name);
+      const person = normalizeApiPerson(response.data);
+      const isFavorite = rootGetters["favorites/isFavorite"](person.id);
+      person.favorite = isFavorite;
 
-      commit("SET_PERSON", {
-        favorite: isFavorite,
-        ...person,
-      });
+      commit("SET_PERSON", person);
       commit("SET_LOADING", false);
     } catch (error: any) {
       commit("SET_LOADING", false);

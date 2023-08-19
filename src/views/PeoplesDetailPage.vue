@@ -4,15 +4,13 @@
     <TablePerson
       :person="person"
       :loading="loading"
-      @updateFavorite="cutPerson" />
+      @updateFavorite="toggleFavorite" />
   </div>
 </template>
 
 <script lang="ts">
 import TablePerson from "@/components/TablePerson.vue";
 import PlaceholderComponent from "@/components/TablePlaceholder.vue";
-import { cutApiPerson } from "@/helpers/index";
-import { ApiPerson } from "@/interfaces";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -26,10 +24,6 @@ export default {
   methods: {
     ...mapActions("search", ["getOnePerson"]),
     ...mapActions("favorites", ["toggleFavorite"]),
-    cutPerson(person: ApiPerson) {
-      const shortPerson = cutApiPerson(person);
-      this.toggleFavorite(shortPerson);
-    },
   },
   mounted() {
     this.getOnePerson(this.$route.params.id);

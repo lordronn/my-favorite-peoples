@@ -1,5 +1,5 @@
 import api from "@/extends/api";
-import { cutApiPerson, normalizeApiPerson } from "@/helpers/index";
+import { normalizeApiPerson } from "@/helpers/index";
 import { ApiPerson, PeoplesState, RootState } from "@/interfaces";
 import { ActionTree, MutationTree } from "vuex";
 
@@ -70,12 +70,9 @@ const actions: ActionTree<PeoplesState, RootState> = {
 
       const persons = response.data.results.map((apiPerson: ApiPerson) => {
         const person = normalizeApiPerson(apiPerson);
-        const shortPerson = cutApiPerson(person);
+        person.favorite = rootGetters["favorites/isFavorite"](person.id);
 
-        shortPerson.favorite = rootGetters["favorites/isFavorite"](
-          shortPerson.id
-        );
-        return shortPerson;
+        return person;
       });
 
       const totalPages = Math.ceil(response.data.count / 10);

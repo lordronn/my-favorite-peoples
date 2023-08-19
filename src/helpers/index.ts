@@ -1,4 +1,4 @@
-import { ApiPerson, ShortPerson } from "@/interfaces/index";
+import { ApiPerson } from "@/interfaces/index";
 
 export function getIdFromPerson(url: string): string {
   const regex = /(\d+)\/?$/;
@@ -8,21 +8,11 @@ export function getIdFromPerson(url: string): string {
 }
 
 export function normalizeApiPerson(data: ApiPerson): ApiPerson {
-  return {
-    ...data,
-    id: getIdFromPerson(data.url),
-    favorite: data.favorite ?? false,
-  };
-}
+  const { favorite, ...restOfPerson } = data;
 
-export function cutApiPerson(data: ApiPerson): ShortPerson {
-  const { name, height, mass, hair_color, id, favorite } = data;
   return {
-    name,
-    height,
-    mass,
-    hair_color,
-    id,
-    favorite,
+    favorite, 
+    ...restOfPerson,
+    id: getIdFromPerson(data.url),
   };
 }
