@@ -23,22 +23,22 @@ const state: PeoplesState = {
 };
 
 const mutations: MutationTree<PeoplesState> = {
-  SET_PERSONS(state, payload) {
-    state.peoples = payload;
+  SET_PERSONS(state, peoples: ApiPerson[]) {
+    state.peoples = peoples;
   },
-  SET_LOADING(state, status) {
+  SET_LOADING(state, status: boolean) {
     state.loading = status;
   },
-  SET_LOADING_ERROR(state, status) {
+  SET_LOADING_ERROR(state, status: boolean) {
     state.loadingError = status;
   },
-  SET_CURRENT_PAGE(state, pageCount) {
+  SET_CURRENT_PAGE(state, pageCount: number) {
     state.currentPage = pageCount;
   },
-  SET_TOTAL_PAGES(state, pageCount) {
+  SET_TOTAL_PAGES(state, pageCount: number) {
     state.totalPages = pageCount;
   },
-  TOGGLE_FAVORITE(state, personId) {
+  TOGGLE_FAVORITE(state, personId: string) {
     const personToToggle = state.peoples.find(
       (people) => people.id === personId
     );
@@ -88,7 +88,7 @@ const actions: ActionTree<PeoplesState, RootState> = {
       }
     }
   },
-  updateFavoriteStatus({ commit }, id) {
+  updateFavoriteStatus({ commit }, id: string) {
     commit("TOGGLE_FAVORITE", id);
   },
   updatePage({ commit, dispatch }, pageNumber: number) {

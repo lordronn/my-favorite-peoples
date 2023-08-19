@@ -1,6 +1,6 @@
 import api from "@/extends/api";
 import { normalizeApiPerson } from "@/helpers/index";
-import { RootState, SearchState } from "@/interfaces";
+import { ApiPerson, RootState, SearchState } from "@/interfaces";
 
 import { ActionTree, MutationTree } from "vuex";
 
@@ -16,19 +16,19 @@ export const state: SearchState = {
 };
 
 const mutations: MutationTree<SearchState> = {
-  SET_RESULTS(state, results) {
+  SET_RESULTS(state, results: ApiPerson[]) {
     state.results = results;
   },
-  SET_LOADING(state, status) {
+  SET_LOADING(state, status: boolean) {
     state.loading = status;
   },
-  SET_LOADING_ERROR(state, status) {
+  SET_LOADING_ERROR(state, status: boolean) {
     state.loadingError = status;
   },
-  SET_PERSON(state, person) {
+  SET_PERSON(state, person: ApiPerson) {
     state.person = person;
   },
-  TOGGLE_FAVORITE(state, personId) {
+  TOGGLE_FAVORITE(state, personId: string) {
     const person = state.person;
     if (person && person.id === personId) {
       person.favorite = !person.favorite;
@@ -37,7 +37,7 @@ const mutations: MutationTree<SearchState> = {
 };
 
 const actions: ActionTree<SearchState, RootState> = {
-  async searchPerson({ commit }, value) {
+  async searchPerson({ commit }, value: string) {
     if (currentController) {
       currentController.abort();
     }
@@ -49,7 +49,6 @@ const actions: ActionTree<SearchState, RootState> = {
       const response = await api.get(`people/?search=${value}`, {
         signal: currentController.signal,
       });
-
       const persons = response.data.results.map(normalizeApiPerson);
 
       commit("SET_RESULTS", persons);
@@ -61,7 +60,7 @@ const actions: ActionTree<SearchState, RootState> = {
       }
     }
   },
-  async getOnePerson({ commit, rootGetters }, id) {
+  async getOnePerson({ commit, rootGetters }, id: string) {
     commit("SET_LOADING", true);
     commit("SET_LOADING_ERROR", false);
 
@@ -79,7 +78,7 @@ const actions: ActionTree<SearchState, RootState> = {
       console.error("Error get person:", error);
     }
   },
-  updateFavoriteStatus({ commit }, id) {
+  updateFavoriteStatus({ commit }, id: string) {
     commit("TOGGLE_FAVORITE", id);
   },
   resetResults({ commit }) {

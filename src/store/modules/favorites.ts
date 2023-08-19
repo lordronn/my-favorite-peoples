@@ -8,11 +8,10 @@ export const state: FavoritesState = {
 };
 
 const mutations: MutationTree<FavoritesState> = {
-  SET_FAVORITE(state, person) {
+  SET_FAVORITE(state, person: ApiPerson) {
     state.favorites.push(person);
   },
-
-  UNSET_FAVORITE(state, personId) {
+  UNSET_FAVORITE(state, personId: string) {
     state.favorites = state.favorites.filter(
       (favorite) => favorite.id !== personId
     );

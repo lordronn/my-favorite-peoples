@@ -2,7 +2,11 @@
   <div id="app">
     <NavBar></NavBar>
 
-    <router-view></router-view>
+    <router-view v-slot="{ Component }">
+      <transition name="fade" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -16,4 +20,29 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.slide-enter-active {
+  animation: slide-in 0.5s;
+}
+.slide-leave-active {
+  animation: slide-out 0.5s;
+}
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-out {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+</style>
