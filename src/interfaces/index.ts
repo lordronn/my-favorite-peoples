@@ -1,5 +1,5 @@
 export interface PeoplesState {
-  peoples: Person[];
+  peoples: ShortPerson[];
   loading: boolean;
   loadingError: boolean;
   currentPage: number;
@@ -8,11 +8,11 @@ export interface PeoplesState {
 }
 
 export interface FavoritesState {
-  favorites: Person[];
+  favorites: ShortPerson[];
 }
 
 export interface SearchState {
-  results: Person[];
+  results: ShortPerson[];
   person: ApiPerson | null;
   loading: Boolean;
   loadingError: Boolean;
@@ -40,36 +40,22 @@ export interface ApiPerson {
   created: string;
   edited: string;
   url: string;
-  favorite?: boolean;
-}
-
-export interface Person {
-  name: string;
-  height: string;
-  mass: string;
-  hairColor: string;
   favorite: boolean;
   id: string;
 }
 
-export type PersonKeys = keyof Person;
+export interface ShortPerson {
+  name: string;
+  height: string;
+  mass: string;
+  hair_color: string;
+  favorite: boolean;
+  id: string;
+}
+
+export type PersonKeys = keyof ShortPerson;
 
 export interface TableColumn {
   key: PersonKeys;
   label: string;
-}
-
-export function normalizePerson(data: ApiPerson): Person {
-  const regex = /(\d+)\/?$/;
-  const match = data.url.match(regex);
-  const id = match ? match[1] : "";
-
-  return {
-    name: data.name,
-    height: data.height,
-    mass: data.mass,
-    hairColor: data.hair_color,
-    id: id,
-    favorite: false,
-  };
 }

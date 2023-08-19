@@ -1,10 +1,6 @@
 import api from "@/extends/api";
-import {
-  ApiPerson,
-  PeoplesState,
-  RootState,
-  normalizePerson,
-} from "@/interfaces";
+import { cutApiPerson, normalizeApiPerson } from "@/helpers/index";
+import { ApiPerson, PeoplesState, RootState } from "@/interfaces";
 import { ActionTree, MutationTree } from "vuex";
 
 let currentController: AbortController | null = null;
@@ -21,7 +17,7 @@ const state: PeoplesState = {
     { key: "name", label: "Name" },
     { key: "height", label: "Height" },
     { key: "mass", label: "Mass" },
-    { key: "hairColor", label: "Hair Color" },
+    { key: "hair_color", label: "Hair Color" },
     { key: "favorite", label: "Favorite" },
   ],
 };
@@ -30,10 +26,10 @@ const mutations: MutationTree<PeoplesState> = {
   SET_PERSONS(state, payload) {
     state.peoples = payload;
   },
-  SET_LOADING(state, status: boolean) {
+  SET_LOADING(state, status) {
     state.loading = status;
   },
-  SET_LOADING_ERROR(state, status: boolean) {
+  SET_LOADING_ERROR(state, status) {
     state.loadingError = status;
   },
   SET_CURRENT_PAGE(state, pageCount) {
@@ -42,9 +38,9 @@ const mutations: MutationTree<PeoplesState> = {
   SET_TOTAL_PAGES(state, pageCount) {
     state.totalPages = pageCount;
   },
-  TOGGLE_FAVORITE(state, personName: string) {
+  TOGGLE_FAVORITE(state, personId) {
     const personToToggle = state.peoples.find(
-      (people) => people.name === personName
+      (people) => people.id === personId
     );
 
     if (personToToggle) {
@@ -73,23 +69,30 @@ const actions: ActionTree<PeoplesState, RootState> = {
       });
 
       const persons = response.data.results.map((apiPerson: ApiPerson) => {
-        const person = normalizePerson(apiPerson);
-        person.favorite = rootGetters["favorites/isFavorite"](person.name);
-        return person;
+        const person = normalizeApiPerson(apiPerson);
+        const shortPerson = cutApiPerson(person);
+
+        shortPerson.favorite = rootGetters["favorites/isFavorite"](
+          shortPerson.id
+        );
+        return shortPerson;
       });
 
-      commit("SET_TOTAL_PAGES", Math.ceil(response.data.count / 10));
+      const totalPages = Math.ceil(response.data.count / 10);
+
+      commit("SET_TOTAL_PAGES", totalPages);
       commit("SET_PERSONS", persons);
       commit("SET_LOADING", false);
     } catch (error: any) {
-      if (error.name === "CanceledError") {
-        console.log("Fetch aborted");
-      } else {
+      if (error.name !== "CanceledError") {
         console.error("Error fetching persons:", error);
         commit("SET_LOADING_ERROR", true);
         commit("SET_LOADING", false);
       }
     }
+  },
+  updateFavoriteStatus({ commit }, id) {
+    commit("TOGGLE_FAVORITE", id);
   },
   updatePage({ commit, dispatch }, pageNumber: number) {
     commit("SET_CURRENT_PAGE", pageNumber);

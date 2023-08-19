@@ -1,5 +1,7 @@
 import api from "@/extends/api";
-import { RootState, SearchState, normalizePerson } from "@/interfaces";
+import { normalizeApiPerson } from "@/helpers/index";
+import { RootState, SearchState } from "@/interfaces";
+
 import { ActionTree, MutationTree } from "vuex";
 
 let currentController: AbortController | null = null;
@@ -10,7 +12,7 @@ export const state: SearchState = {
   results: [],
   person: null,
   loading: false,
-  loadingError: false
+  loadingError: false,
 };
 
 const mutations: MutationTree<SearchState> = {
@@ -20,15 +22,16 @@ const mutations: MutationTree<SearchState> = {
   SET_LOADING(state, status) {
     state.loading = status;
   },
-  SET_LOADING_ERROR(state, status: boolean) {
+  SET_LOADING_ERROR(state, status) {
     state.loadingError = status;
   },
   SET_PERSON(state, person) {
     state.person = person;
   },
-  TOGGLE_FAVORITE(state, personName) {
-    if (state.person && state.person.name === personName) {
-      state.person.favorite = !state.person.favorite;
+  TOGGLE_FAVORITE(state, personId) {
+    const person = state.person;
+    if (person && person.id === personId) {
+      person.favorite = !person.favorite;
     }
   },
 };
@@ -47,14 +50,12 @@ const actions: ActionTree<SearchState, RootState> = {
         signal: currentController.signal,
       });
 
-      const persons = response.data.results.map(normalizePerson);
+      const persons = response.data.results.map(normalizeApiPerson);
 
       commit("SET_RESULTS", persons);
       commit("SET_LOADING", false);
     } catch (error: any) {
-      if (error.name === "CanceledError") {
-        console.log("Fetch aborted");
-      } else {
+      if (error.name !== "CanceledError") {
         commit("SET_LOADING", false);
         console.error("Error search persons:", error);
       }
@@ -62,7 +63,7 @@ const actions: ActionTree<SearchState, RootState> = {
   },
   async getOnePerson({ commit, rootGetters }, id) {
     commit("SET_LOADING", true);
-    commit('SET_LOADING_ERROR', false)
+    commit("SET_LOADING_ERROR", false);
 
     try {
       const response = await api.get(`/people/${id}`);
@@ -76,12 +77,12 @@ const actions: ActionTree<SearchState, RootState> = {
       commit("SET_LOADING", false);
     } catch (error: any) {
       commit("SET_LOADING", false);
-      commit('SET_LOADING_ERROR', true)
+      commit("SET_LOADING_ERROR", true);
       console.error("Error get person:", error);
     }
   },
-  resetPerson({ commit }) {
-    commit("SET_PERSON", null);
+  updateFavoriteStatus({ commit }, id) {
+    commit("TOGGLE_FAVORITE", id);
   },
   resetResults({ commit }) {
     commit("SET_RESULTS", []);

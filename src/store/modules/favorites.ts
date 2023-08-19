@@ -1,4 +1,4 @@
-import { FavoritesState, Person } from "@/interfaces";
+import { FavoritesState, RootState, ShortPerson } from "@/interfaces";
 import { ActionTree, MutationTree } from "vuex";
 
 const namespaced: boolean = true;
@@ -8,36 +8,34 @@ export const state: FavoritesState = {
 };
 
 const mutations: MutationTree<FavoritesState> = {
-  ADD_TO_FAVORITE(state, person: Person) {
+  SET_FAVORITE(state, person) {
     state.favorites.push(person);
   },
 
-  REMOVE_FROM_FAVORITE(state, personName: string) {
+  UNSET_FAVORITE(state, personId) {
     state.favorites = state.favorites.filter(
-      (favorit) => favorit.name !== personName
+      (favorite) => favorite.id !== personId
     );
   },
 };
-
-const actions: ActionTree<FavoritesState, any> = {
-  toggleFavorite({ commit, state }, person) {
-    const isFavorite = !!state.favorites.find(
-      (favorit) => favorit.name === person.name
-    );
-    commit("search/TOGGLE_FAVORITE", person.name, { root: true });
-    commit("peoples/TOGGLE_FAVORITE", person.name, { root: true });
+const actions: ActionTree<FavoritesState, RootState> = {
+  toggleFavorite({ commit, getters, dispatch }, person: ShortPerson) {
+    const isFavorite = getters.isFavorite(person.id);
 
     if (isFavorite) {
-      commit("REMOVE_FROM_FAVORITE", person.name);
+      commit("UNSET_FAVORITE", person.id);
     } else {
-      commit("ADD_TO_FAVORITE", person);
+      commit("SET_FAVORITE", person);
     }
+
+    dispatch("search/updateFavoriteStatus", person.id, { root: true });
+    dispatch("peoples/updateFavoriteStatus", person.id, { root: true });
   },
 };
 
 const getters = {
-  isFavorite: (state: FavoritesState) => (name: string) => {
-    return !!state.favorites.find((item) => item.name === name);
+  isFavorite: (state: FavoritesState) => (personId: string) => {
+    return !!state.favorites.find((favorite) => favorite.id === personId);
   },
 };
 
