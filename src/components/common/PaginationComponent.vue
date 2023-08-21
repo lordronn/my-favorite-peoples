@@ -7,7 +7,7 @@
         'pagination__button',
         { 'pagination__button--active': currentPage === page },
       ]"
-      @click="changePage(page)">
+      @click="changePage(page, currentPage)">
       {{ page }}
     </button>
   </div>
@@ -26,8 +26,10 @@ export default {
     },
   },
   methods: {
-    changePage(page: number) {
-      this.$emit("changePage", page);
+    changePage(page: number, currentPage: number) {
+      if (page !== currentPage) {
+        this.$emit("changePage", page);
+      }
     },
   },
 };
@@ -58,6 +60,7 @@ export default {
 .pagination__button--active {
   background-color: #3b82f6;
   color: white;
+  cursor: not-allowed;
 }
 
 @media (max-width: 640px) {
